@@ -8,31 +8,37 @@ first line: x logs where x is the number of documents in this collection
 second line: Methods:
 5 lines with the number of documents with the method =
 ["GET", "POST", "PUT", "PATCH", "DELETE"] in this order
-(see example below - warning: it’s a tabulation before each line)
+(see example below - warning: its a tabulation before each line)
 one line with the number of documents with:
 method=GET
 path=/status
 """
 
-
-import pymongo
 from pymongo import MongoClient
 
 
-def log_nginx_stats(mongo_collection):
-    """Display (same as the example):"""
-    print(f"{mongo_collection.estimated_document_count()} logs")
-
-    print("Methods:")
-    for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
-        count = mongo_collection.count_documents({"method": method})
-        print(f"\tmethod {method}: {count}")
-
-    number_of_gets = mongo_collection.count_documents(
+def log_stats():
+    """ Database: logs
+    """
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    logs_collection = client.logs.nginx
+    total = logs_collection.count_documents({})
+    get = logs_collection.count_documents({"method": "GET"})
+    post = logs_collection.count_documents({"method": "POST"})
+    put = logs_collection.count_documents({"method": "PUT"})
+    patch = logs_collection.count_documents({"method": "PATCH"})
+    delete = logs_collection.count_documents({"method": "DELETE"})
+    path = logs_collection.count_documents(
         {"method": "GET", "path": "/status"})
-    print(f"{number_of_gets} status check")
+    print(f"{total} logs")
+    print("Methods:")
+    print(f"\tmethod GET: {get}")
+    print(f"\tmethod POST: {post}")
+    print(f"\tmethod PUT: {put}")
+    print(f"\tmethod PATCH: {patch}")
+    print(f"\tmethod DELETE: {delete}")
+    print(f"{path} status check")
 
 
 if __name__ == "__main__":
-    mongo_collection = MongoClient('mongodb://127.0.0.1:27017').logs.nginx
-    log_nginx_stats(mongo_collection)
+    log_stats()
