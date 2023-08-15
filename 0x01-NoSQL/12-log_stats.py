@@ -4,7 +4,6 @@ logs stored in MongoDB:
 
 Database: logs
 Collection: nginx
-Display (same as the example):
 first line: x logs where x is the number of documents in this collection
 second line: Methods:
 5 lines with the number of documents with the method =
@@ -21,7 +20,7 @@ from pymongo import MongoClient
 
 
 def log_nginx_stats(mongo_collection):
-    """provides some stats about Nginx logs"""
+    """Display (same as the example):"""
     print(f"{mongo_collection.estimated_document_count()} logs")
 
     print("Methods:")
