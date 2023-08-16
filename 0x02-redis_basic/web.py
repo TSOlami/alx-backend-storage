@@ -25,10 +25,10 @@ r = redis.Redis()
 
 
 def url_access_count(method):
-    """decorator for get_page function"""
+    """decorator for get_page function with a wrapper"""
     @wraps(method)
     def wrapper(url):
-        """wrapper function"""
+        """wrapper function that takes one argument"""
         key = "cached:" + url
         cached_value = r.get(key)
         if cached_value:
