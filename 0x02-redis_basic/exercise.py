@@ -6,7 +6,7 @@ takes a data argument and returns a string.
 
 
 import redis
-import uuid
+import uuid4
 from functools import wraps
 from typing import Callable, Optional, Union
 
